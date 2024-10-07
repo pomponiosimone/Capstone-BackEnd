@@ -1,10 +1,7 @@
 package pomponiosimone.Capstone_BackEnd.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,14 +28,14 @@ public class User implements UserDetails {
     private String nome;
     private String cognome;
     private String password;
+    @Enumerated(EnumType.STRING)
     private Ruolo ruolo;
 
     //Costruttori
-    
-    public User(String cognome, String email, UUID id, String nome, String password, Ruolo ruolo) {
+
+    public User(String cognome, String email, String nome, String password) {
         this.cognome = cognome;
         this.email = email;
-        this.id = id;
         this.nome = nome;
         this.password = password;
         this.ruolo = Ruolo.ADMIN;
