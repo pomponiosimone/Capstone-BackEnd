@@ -9,7 +9,7 @@ public record TagliaDTO(
         @NotNull(message = "La taglia è obbligatoriA")
         @Min(value = 37, message = "Il numero della taglia deve essere maggiore di 37")
         @Max(value= 47, message=" il numero della taglia deve essere minore di 47")
-        Integer numeroTaglia,
+        Integer taglia,
 
         @NotNull(message = "La quantità è obbligatoria")
         @Min(value = 0, message = "La quantità non può essere negativa")

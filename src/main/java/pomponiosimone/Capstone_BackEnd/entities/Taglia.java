@@ -1,5 +1,6 @@
 package pomponiosimone.Capstone_BackEnd.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,7 @@ public class Taglia {
 
     @ManyToOne
     @JoinColumn(name = "scarpa_id")
+    @JsonIgnore
     private Scarpa scarpa;
 
     public Taglia( int quantità, int taglia) {

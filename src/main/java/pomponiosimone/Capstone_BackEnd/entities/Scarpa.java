@@ -24,7 +24,7 @@ public class Scarpa {
     private String descrizione;
     private double prezzo;
     private String immagine;
-    @OneToMany(mappedBy = "scarpa", cascade = CascadeType.ALL )
+    @OneToMany(mappedBy = "scarpa", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Taglia> taglie;
 
     //Costruttore
