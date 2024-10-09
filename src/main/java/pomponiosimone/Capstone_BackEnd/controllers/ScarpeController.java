@@ -27,7 +27,7 @@ public class ScarpeController {
     @Autowired
     private ScarpeService scarpeService;
 
-    @GetMapping("/view")
+    @GetMapping("/view/all")
     public Page<Scarpa> findAll(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "10") int size,
                                 @RequestParam(defaultValue = "id") String sortBy) {
