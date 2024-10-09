@@ -1,5 +1,6 @@
 package pomponiosimone.Capstone_BackEnd.controllers;
 
+import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class ScarpeController {
     @Autowired
     private ScarpeService scarpeService;
 
-    @GetMapping
+    @GetMapping("/view")
     public Page<Scarpa> findAll(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "10") int size,
                                 @RequestParam(defaultValue = "id") String sortBy) {
@@ -34,7 +35,8 @@ public class ScarpeController {
     }
 
     //Get Marca
-    @GetMapping("/{marca}")
+    @GetMapping("/view/{marca}")
+
     public Page<Scarpa> findMarca(@PathVariable() String marca,
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
