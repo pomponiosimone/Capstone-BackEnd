@@ -32,6 +32,18 @@ public class ScarpeController {
                                 @RequestParam(defaultValue = "id") String sortBy) {
         return this.scarpeService.findAll(page, size, sortBy);
     }
+
+    //Get Marca
+    @GetMapping("/{marca}")
+    public Page<Scarpa> findMarca(@PathVariable() String marca,
+                                  @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size,
+                                  @RequestParam(defaultValue = "id") String sortBy) {
+        return this.scarpeService.findMarca(marca, page, size, sortBy);
+    }
+
+
+     //Creazione scarpe
 @PostMapping("/creazione")
 @ResponseStatus(HttpStatus.CREATED)
 public NewEntityRespDTO save(@RequestBody @Validated ScarpaDTO body, BindingResult validationResult) {

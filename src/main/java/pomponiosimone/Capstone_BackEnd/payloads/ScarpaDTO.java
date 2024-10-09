@@ -15,7 +15,7 @@ ScarpaDTO(
         @NotNull
         double prezzo,
         @NotEmpty(message = "la desrizione è obbligatoria")
-        @Size(min = 3, max = 150)
+        @Size(min = 3, max = 400)
         String descrizione,
         @NotEmpty(message ="la  marca è obbligatoria")
         @Size(min = 3, max = 40)
