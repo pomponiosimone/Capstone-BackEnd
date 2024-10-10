@@ -23,7 +23,7 @@ public class MailgunSender {
         this.fromEmail = fromEmail;
     }
 
-    public void sendEmail(String contattoEmail, String subject, String body) {
+    public void sendEmailHelp(String contattoEmail, String subject, String body) {
         HttpResponse<JsonNode> response = Unirest.post("https://api.mailgun.net/v3/" + this.domainName + "/messages")
                 .basicAuth("api", this.apiKey)
                 .queryString("from", contattoEmail)
