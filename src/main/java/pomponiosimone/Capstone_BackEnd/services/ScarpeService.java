@@ -14,6 +14,7 @@ import pomponiosimone.Capstone_BackEnd.entities.Scarpa;
 import pomponiosimone.Capstone_BackEnd.entities.Taglia;
 
 import pomponiosimone.Capstone_BackEnd.exceptions.BadRequestException;
+import pomponiosimone.Capstone_BackEnd.exceptions.NotFoundException;
 import pomponiosimone.Capstone_BackEnd.payloads.ScarpaDTO;
 import pomponiosimone.Capstone_BackEnd.repositories.ScarpeRepository;
 
@@ -55,6 +56,15 @@ public class ScarpeService {
          Pageable pageable = PageRequest.of( page, size, Sort.by(sortBy));
          return this.scarpeRepository.findByMarca(marca, pageable);
      }
+         //Find by id
+      public Scarpa findScarpaById(UUID scarpaId) {
+    return this.scarpeRepository.findById(scarpaId).orElseThrow(() -> new NotFoundException(scarpaId));
+}
+     //Delete shoes
+    public void findByIdAndRemoveShoes (UUID scarpaId) {
+       Scarpa found = this.findScarpaById(scarpaId);
+        this.scarpeRepository.delete(found);
+    }
             //Img Upload
 
             public void uploadImg (MultipartFile file, UUID scarpaId) throws IOException {

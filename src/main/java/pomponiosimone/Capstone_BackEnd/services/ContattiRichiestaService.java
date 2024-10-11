@@ -2,6 +2,7 @@ package pomponiosimone.Capstone_BackEnd.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pomponiosimone.Capstone_BackEnd.entities.ContattoRichiesta;
 import pomponiosimone.Capstone_BackEnd.payloads.ContattoRichiestaDTO;
 import pomponiosimone.Capstone_BackEnd.repositories.ContattiRichiestaRepository;
 import pomponiosimone.Capstone_BackEnd.tools.MailgunSender;
@@ -17,6 +18,7 @@ public class ContattiRichiestaService {
     //Post email
 
     public String sendEmail(ContattoRichiestaDTO body) {
+
         String subject = body.oggetto();
         String bodyEmail = "Nome: " + body.nome() + " " +
                 "Messaggio: " + body.messaggio();

@@ -44,9 +44,20 @@ public class ScarpeController {
         return this.scarpeService.findMarca(marca, page, size, sortBy);
     }
 
+      //get Id
+
+    @GetMapping("/{scarpaId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Scarpa findByIdScarpa (@PathVariable UUID scarpaId) {
+        return this.scarpeService.findScarpaById(scarpaId);
+    }
+
+
 
      //Creazione scarpe
+
 @PostMapping("/creazione")
+@PreAuthorize("hasAuthority('ADMIN')")
 @ResponseStatus(HttpStatus.CREATED)
 public NewEntityRespDTO save(@RequestBody @Validated ScarpaDTO body, BindingResult validationResult) {
 
@@ -64,6 +75,12 @@ public NewEntityRespDTO save(@RequestBody @Validated ScarpaDTO body, BindingResu
     }
 
 }
+//Delete shoes
+    @DeleteMapping("/delete/{scarpaId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public void findByIdAndDelete (@PathVariable UUID scarpaId){
+        this.scarpeService.findByIdAndRemoveShoes(scarpaId);
+    }
    // UPLOAD
     @PostMapping("/{scarpaId}/immagine")
     @PreAuthorize("hasAuthority('ADMIN')")
