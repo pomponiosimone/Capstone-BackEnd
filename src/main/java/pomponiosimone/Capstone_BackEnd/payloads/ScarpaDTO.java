@@ -21,7 +21,7 @@ ScarpaDTO(
         @Size(min = 3, max = 40)
         String marca,
         @NotEmpty(message ="immagine è obbligatoria")
-        @Size(min = 3, max = 40)
+        @Size(min = 3, max = 100)
         String immagine,
         List<TagliaDTO> taglie
 ) {

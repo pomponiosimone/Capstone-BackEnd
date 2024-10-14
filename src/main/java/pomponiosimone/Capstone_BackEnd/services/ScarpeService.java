@@ -2,6 +2,7 @@ package pomponiosimone.Capstone_BackEnd.services;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,8 +20,8 @@ import pomponiosimone.Capstone_BackEnd.payloads.ScarpaDTO;
 import pomponiosimone.Capstone_BackEnd.repositories.ScarpeRepository;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +34,7 @@ public class ScarpeService {
     public Page<Scarpa> findAll(int page, int size, String sortBy) {
         if (page > 10) page = 10;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
         return this.scarpeRepository.findAll(pageable);
     }
     //Save
@@ -60,6 +62,42 @@ public class ScarpeService {
       public Scarpa findScarpaById(UUID scarpaId) {
     return this.scarpeRepository.findById(scarpaId).orElseThrow(() -> new NotFoundException(scarpaId));
 }
+//Put Shoes
+
+    public Scarpa modificaScarpa (UUID scarpaId, Scarpa body) throws BadRequestException {
+        Scarpa scarpaFound  = this.findScarpaById(scarpaId);
+        scarpaFound.setImmagine((body.getImmagine()));
+        scarpaFound.setNome(body.getNome());
+        scarpaFound.setMarca(body.getMarca());
+        scarpaFound.setPrezzo(body.getPrezzo());
+        scarpaFound.setDescrizione(body.getDescrizione());
+
+        List<Taglia> taglieEsistenti = scarpaFound.getTaglie();
+        Map<UUID, Taglia> taglieMap = taglieEsistenti.stream()
+                .collect(Collectors.toMap(Taglia::getId, Function.identity()));
+
+        List<Taglia> taglieAggiornate = new ArrayList<>(taglieEsistenti);
+
+
+        for (Taglia taglia : body.getTaglie()) {
+            if (taglia.getId() != null && taglieMap.containsKey(taglia.getId())) {
+
+                Taglia tagliaEsistente = taglieMap.get(taglia.getId());
+                tagliaEsistente.setQuantità(taglia.getQuantità());
+                tagliaEsistente.setTaglia(taglia.getTaglia());
+            } else {
+
+                Taglia nuovaTaglia = new Taglia(taglia.getQuantità(), taglia.getTaglia());
+                nuovaTaglia.setScarpa(scarpaFound);
+                taglieAggiornate.add(nuovaTaglia);
+            }
+        }
+        taglieAggiornate.sort(Comparator.comparingInt(Taglia::getTaglia));
+
+        scarpaFound.setTaglie(taglieAggiornate);
+        return this.scarpeRepository.save(scarpaFound);
+    }
+
      //Delete shoes
     public void findByIdAndRemoveShoes (UUID scarpaId) {
        Scarpa found = this.findScarpaById(scarpaId);

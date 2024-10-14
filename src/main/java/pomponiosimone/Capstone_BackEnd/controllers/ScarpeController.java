@@ -75,6 +75,12 @@ public NewEntityRespDTO save(@RequestBody @Validated ScarpaDTO body, BindingResu
     }
 
 }
+//Modifica scarpa
+    @PutMapping("/put/{scarpaId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Scarpa findByscarpaIdAndUpdate(@PathVariable UUID scarpaId, @RequestBody Scarpa body) throws BadRequestException {
+        return this.scarpeService.modificaScarpa(scarpaId, body);
+    }
 //Delete shoes
     @DeleteMapping("/delete/{scarpaId}")
     @PreAuthorize("hasAuthority('ADMIN')")

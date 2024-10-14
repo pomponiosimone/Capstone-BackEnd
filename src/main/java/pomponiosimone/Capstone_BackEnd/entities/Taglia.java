@@ -12,6 +12,7 @@ import java.util.UUID;
 @Getter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 public class Taglia {
     @Id
     @GeneratedValue
@@ -25,8 +26,15 @@ public class Taglia {
     @JsonIgnore
     private Scarpa scarpa;
 
-    public Taglia( int quantità, int taglia) {
+    public Taglia(int quantità, int taglia) {
         this.quantità = quantità;
         this.taglia = taglia;
     }
+    public Taglia( int quantità, int taglia, Scarpa scarpa) {
+        this.quantità = quantità;
+        this.taglia = taglia;
+        this.scarpa = scarpa;
+    }
+
+
 }

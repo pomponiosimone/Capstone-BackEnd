@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name= "scarpe")
@@ -40,6 +42,11 @@ public class Scarpa {
             taglia.setScarpa(this);
         }
     }
-
+    public List<Taglia> getTaglie() {
+        
+        return taglie.stream()
+                .sorted(Comparator.comparingInt(Taglia::getTaglia))
+                .collect(Collectors.toList());
+    }
 }
 
