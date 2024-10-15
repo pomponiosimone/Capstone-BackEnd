@@ -13,6 +13,6 @@ public record TagliaDTO(
 
         @NotNull(message = "La quantità è obbligatoria")
         @Min(value = 0, message = "La quantità non può essere negativa")
-        Integer quantita
+        Integer quantità
 ) {
 }

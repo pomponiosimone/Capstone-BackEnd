@@ -29,7 +29,7 @@ public class ScarpeController {
 
     @GetMapping("/view/all")
     public Page<Scarpa> findAll(@RequestParam(defaultValue = "0") int page,
-                                @RequestParam(defaultValue = "10") int size,
+                                @RequestParam(defaultValue = "12") int size,
                                 @RequestParam(defaultValue = "id") String sortBy) {
         return this.scarpeService.findAll(page, size, sortBy);
     }
@@ -39,15 +39,15 @@ public class ScarpeController {
 
     public Page<Scarpa> findMarca(@PathVariable() String marca,
                                   @RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "10") int size,
+                                  @RequestParam(defaultValue = "12") int size,
                                   @RequestParam(defaultValue = "id") String sortBy) {
         return this.scarpeService.findMarca(marca, page, size, sortBy);
     }
 
       //get Id
 
-    @GetMapping("/{scarpaId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/view/scarpa/{scarpaId}")
+
     public Scarpa findByIdScarpa (@PathVariable UUID scarpaId) {
         return this.scarpeService.findScarpaById(scarpaId);
     }

@@ -32,19 +32,24 @@ public class ScarpeService {
     private Cloudinary cloudinaryUploader;
 
     public Page<Scarpa> findAll(int page, int size, String sortBy) {
-        if (page > 10) page = 10;
+        if (page > 12) page = 12;
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
 
         return this.scarpeRepository.findAll(pageable);
     }
     //Save
-    public Scarpa saveSneakers (ScarpaDTO body) {
+    public Scarpa saveSneakers(ScarpaDTO body) {
         List<Taglia> taglie = body.taglie().stream()
-                .map(tagliaDTO -> new Taglia(tagliaDTO.quantita(), tagliaDTO.taglia()))
+                .map(tagliaDTO -> {
+                    if (tagliaDTO.quantità() == null || tagliaDTO.taglia() == null) {
+                        throw new BadRequestException("Taglia o quantità non possono essere null");
+                    }
+                    return new Taglia(tagliaDTO.quantità(), tagliaDTO.taglia());
+                })
                 .collect(Collectors.toList());
-        if (this.scarpeRepository.findByNome(body.nome()).isPresent()) {
-            throw new BadRequestException("nome" + body.nome() + "già in uso!!");
 
+        if (this.scarpeRepository.findByNome(body.nome()).isPresent()) {
+            throw new BadRequestException("Il nome " + body.nome() + " è già in uso!");
         } else {
             Scarpa scarpa = new Scarpa(body.descrizione(), body.immagine(), body.marca(), body.nome(), body.prezzo(), taglie);
             return this.scarpeRepository.save(scarpa);
