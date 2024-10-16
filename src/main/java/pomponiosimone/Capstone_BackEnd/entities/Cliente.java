@@ -12,7 +12,6 @@ import java.util.UUID;
 @Setter
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class Cliente {
     @Id
@@ -31,14 +30,13 @@ public class Cliente {
 
     //Costruttore
 
-    public Cliente(String avatarURL, String cognome, LocalDate dataDiNascita, String email, String indirizzoCompleto, String nome, List<Ordine> ordini, String password) {
+    public Cliente(String avatarURL, String cognome, LocalDate dataDiNascita, String email, String indirizzoCompleto, String nome, String password) {
         this.avatarURL = avatarURL;
         this.cognome = cognome;
         this.dataDiNascita = dataDiNascita;
         this.email = email;
         this.indirizzoCompleto = indirizzoCompleto;
         this.nome = nome;
-        this.ordini = ordini;
         this.password = password;
     }
 }

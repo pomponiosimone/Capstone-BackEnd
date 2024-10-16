@@ -28,7 +28,9 @@ public class Scarpa {
     private String immagine;
     @OneToMany(mappedBy = "scarpa", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Taglia> taglie;
-
+    @ManyToOne
+    @JoinColumn(name = "id_ordine", nullable = true)
+    private Ordine ordine;
     //Costruttore
 
     public Scarpa(String descrizione, String immagine, String marca, String nome, double prezzo, List<Taglia> taglie) {

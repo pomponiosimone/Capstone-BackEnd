@@ -20,7 +20,7 @@ public record ClienteDTO(
         String avatarURL,
 
         @NotEmpty(message = "L'email è obbligatoria")
-        @Email(message = "Formato email non valido")
+        @Email(message = "L'email inserita non è valida")
         String email,
 
         @NotEmpty(message = "L'indirizzo è obbligatorio")

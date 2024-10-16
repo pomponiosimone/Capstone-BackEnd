@@ -31,8 +31,7 @@ public class Ordine {
     private String statoOrdine;
     private TipoPagamento metodoPagamento;
     private TipoSpedizione tipoSpedizione;
-    private String indirizzoSpedizione;
-    @OneToMany(mappedBy = "ordine", cascade = CascadeType.ALL)
+    private String indirizzoSpedizione;@OneToMany(mappedBy = "ordine")
     private List<Scarpa> articoli;
 
     @PrePersist
