@@ -37,13 +37,13 @@ public class ClientiController {
     }
 
     //Login
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<Cliente> login(@RequestBody ClienteDTO body) throws BadRequestException {
         Cliente cliente = clientiService.loginCliente(body);
         return ResponseEntity.ok(cliente);
     }
     //Registrazione Post
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     @ResponseStatus(HttpStatus.CREATED)
     public NewEntityRespDTO saveCliente(@RequestBody @Validated ClienteDTO body, BindingResult validationResult) throws BadRequestException {
 
