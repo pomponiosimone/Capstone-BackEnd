@@ -37,6 +37,7 @@ public class ScarpeService {
 
         return this.scarpeRepository.findAll(pageable);
     }
+
     //Save
     public Scarpa saveSneakers(ScarpaDTO body) {
         List<Taglia> taglie = body.taglie().stream()
@@ -57,20 +58,21 @@ public class ScarpeService {
     }
 
     // Get All Marca
-     public Page<Scarpa> findMarca(@PathVariable String marca, int page, int size, String sortBy) {
-         if (page > 10) page = 10;
+    public Page<Scarpa> findMarca(@PathVariable String marca, int page, int size, String sortBy) {
+        if (page > 10) page = 10;
 
-         Pageable pageable = PageRequest.of( page, size, Sort.by(sortBy));
-         return this.scarpeRepository.findByMarca(marca, pageable);
-     }
-         //Find by id
-      public Scarpa findScarpaById(UUID scarpaId) {
-    return this.scarpeRepository.findById(scarpaId).orElseThrow(() -> new NotFoundException(scarpaId));
-}
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return this.scarpeRepository.findByMarca(marca, pageable);
+    }
+
+    //Find by id
+    public Scarpa findScarpaById(UUID scarpaId) {
+        return this.scarpeRepository.findById(scarpaId).orElseThrow(() -> new NotFoundException(scarpaId));
+    }
 //Put Shoes
 
-    public Scarpa modificaScarpa (UUID scarpaId, Scarpa body) throws BadRequestException {
-        Scarpa scarpaFound  = this.findScarpaById(scarpaId);
+    public Scarpa modificaScarpa(UUID scarpaId, Scarpa body) throws BadRequestException {
+        Scarpa scarpaFound = this.findScarpaById(scarpaId);
         scarpaFound.setImmagine((body.getImmagine()));
         scarpaFound.setNome(body.getNome());
         scarpaFound.setMarca(body.getMarca());
@@ -103,19 +105,27 @@ public class ScarpeService {
         return this.scarpeRepository.save(scarpaFound);
     }
 
-     //Delete shoes
-    public void findByIdAndRemoveShoes (UUID scarpaId) {
-       Scarpa found = this.findScarpaById(scarpaId);
+    //Delete shoes
+    public void findByIdAndRemoveShoes(UUID scarpaId) {
+        Scarpa found = this.findScarpaById(scarpaId);
         this.scarpeRepository.delete(found);
     }
-            //Img Upload
+    //Img Upload
 
-            public void uploadImg (MultipartFile file, UUID scarpaId) throws IOException {
-                String url = (String) cloudinaryUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
-                System.out.println("URL: " + url);
-                Scarpa scarpe = scarpeRepository.findById(scarpaId).orElseThrow(() -> new RuntimeException("Cliente non trovato"));
-                scarpe.setImmagine(url);
-                scarpeRepository.save(scarpe);
-            }
+    public void uploadImg(MultipartFile file, UUID scarpaId) throws IOException {
+        String url = (String) cloudinaryUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+        System.out.println("URL: " + url);
+        Scarpa scarpe = scarpeRepository.findById(scarpaId).orElseThrow(() -> new RuntimeException("Cliente non trovato"));
+        scarpe.setImmagine(url);
+        scarpeRepository.save(scarpe);
+    }
 
-        }
+
+    //Filtro descrizione
+    public Page<Scarpa> findByDescrizione(String descrizione, int page, int size, String sortBy) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        return this.scarpeRepository.findByDescrizioneContaining(descrizione, pageable);
+    }
+}

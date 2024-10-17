@@ -4,6 +4,7 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -46,7 +47,7 @@ public class ScarpeController {
 
       //get Id
 
-    @GetMapping("/view/scarpa/{scarpaId}")
+    @GetMapping("/view/details/{scarpaId}")
 
     public Scarpa findByIdScarpa (@PathVariable UUID scarpaId) {
         return this.scarpeService.findScarpaById(scarpaId);
@@ -94,6 +95,16 @@ public NewEntityRespDTO save(@RequestBody @Validated ScarpaDTO body, BindingResu
         this.scarpeService.uploadImg(image, scarpaId);
     }
 
+    //Filtro scarpe in base alla descrizione
+    @GetMapping("view/filtro")
+    public ResponseEntity<Page<Scarpa>> filterMenuByDescrizione(@RequestParam String descrizione,
+                                                              @RequestParam(defaultValue = "0") int page,
+                                                              @RequestParam(defaultValue = "12") int size,
+                                                              @RequestParam(defaultValue = "id") String sortBy) {
+
+        Page<Scarpa> filterMenu = this.scarpeService.findByDescrizione(descrizione, page, size, sortBy);
+        return new ResponseEntity<>(filterMenu, HttpStatus.OK);
+    }
 }
 
 

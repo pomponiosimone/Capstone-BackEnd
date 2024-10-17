@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface ScarpeRepository extends JpaRepository<Scarpa, UUID> {
     Optional<Scarpa> findByNome (String nome);
     Page<Scarpa> findByMarca(String marca, Pageable pageable);
+    Page<Scarpa>  findByDescrizioneContaining(String descrizione, Pageable pageable);
 }
