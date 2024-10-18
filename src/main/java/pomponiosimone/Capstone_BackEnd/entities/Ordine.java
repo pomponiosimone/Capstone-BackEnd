@@ -1,6 +1,7 @@
 package pomponiosimone.Capstone_BackEnd.entities;
 import jakarta.persistence.*;
 import lombok.*;
+import pomponiosimone.Capstone_BackEnd.enums.StatoOrdine;
 import pomponiosimone.Capstone_BackEnd.enums.TipoPagamento;
 import pomponiosimone.Capstone_BackEnd.enums.TipoSpedizione;
 
@@ -28,9 +29,13 @@ public class Ordine {
     private Date dataOrdine;
     private Double totaleOrdine;
     private Double speseSpedizione;
-    private String statoOrdine;
+    @Enumerated(EnumType.STRING)
+    private StatoOrdine statoOrdine;
+    @Enumerated(EnumType.STRING)
     private TipoPagamento metodoPagamento;
+    @Enumerated(EnumType.STRING)
     private TipoSpedizione tipoSpedizione;
+
     private String indirizzoSpedizione;@OneToMany(mappedBy = "ordine")
     private List<Scarpa> articoli;
 
@@ -39,10 +44,10 @@ public class Ordine {
         this.dataOrdine = new Date();
     }
 //Costruttore
-    public Ordine(List<Scarpa> articoli, Cliente cliente, Date dataOrdine, String indirizzoSpedizione, TipoPagamento metodoPagamento, Double speseSpedizione, String statoOrdine, TipoSpedizione tipoSpedizione, Double totaleOrdine) {
+    public Ordine(List<Scarpa> articoli, Cliente cliente, String indirizzoSpedizione, TipoPagamento metodoPagamento, Double speseSpedizione,StatoOrdine statoOrdine, TipoSpedizione tipoSpedizione, Double totaleOrdine) {
         this.articoli = articoli;
         this.cliente = cliente;
-        this.dataOrdine = dataOrdine;
+
         this.indirizzoSpedizione = indirizzoSpedizione;
         this.metodoPagamento = metodoPagamento;
         this.speseSpedizione = speseSpedizione;
