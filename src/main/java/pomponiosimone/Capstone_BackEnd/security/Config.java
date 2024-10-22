@@ -26,7 +26,8 @@ public class Config {
         httpSecurity.formLogin(http -> http.disable());
         httpSecurity.csrf(http -> http.disable());
         httpSecurity.sessionManagement(http -> http.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/**").permitAll());
+        httpSecurity.authorizeHttpRequests(auth -> auth.requestMatchers("/gestione-admin/**").authenticated().anyRequest().permitAll()
+        );
         httpSecurity.cors(Customizer.withDefaults());
         return httpSecurity.build();
     }

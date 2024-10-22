@@ -1,4 +1,5 @@
 package pomponiosimone.Capstone_BackEnd.entities;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import pomponiosimone.Capstone_BackEnd.enums.StatoOrdine;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "ordini")
+@Table(name = "ordine")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -36,15 +37,19 @@ public class Ordine {
     @Enumerated(EnumType.STRING)
     private TipoSpedizione tipoSpedizione;
 
-    private String indirizzoSpedizione;@OneToMany(mappedBy = "ordine")
-    private List<Scarpa> articoli;
+    private String indirizzoSpedizione;
+    @OneToMany(mappedBy = "ordine", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<ScarpaOrdine> articoli;
+
+
 
     @PrePersist
     protected void onCreate() {
         this.dataOrdine = new Date();
     }
-//Costruttore
-    public Ordine(List<Scarpa> articoli, Cliente cliente, String indirizzoSpedizione, TipoPagamento metodoPagamento, Double speseSpedizione,StatoOrdine statoOrdine, TipoSpedizione tipoSpedizione, Double totaleOrdine) {
+      //Costruttore
+    public Ordine(List<ScarpaOrdine> articoli, Cliente cliente, String indirizzoSpedizione, TipoPagamento metodoPagamento, Double speseSpedizione,StatoOrdine statoOrdine, TipoSpedizione tipoSpedizione, Double totaleOrdine) {
         this.articoli = articoli;
         this.cliente = cliente;
 

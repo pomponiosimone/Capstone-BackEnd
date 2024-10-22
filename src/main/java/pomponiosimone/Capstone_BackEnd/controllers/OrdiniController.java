@@ -12,6 +12,7 @@ import pomponiosimone.Capstone_BackEnd.payloads.NewEntityRespDTO;
 import pomponiosimone.Capstone_BackEnd.payloads.OrdineDTO;
 import pomponiosimone.Capstone_BackEnd.services.OrdiniService;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -20,6 +21,9 @@ public class OrdiniController {
     @Autowired
     private OrdiniService ordiniService;
 
+    @GetMapping("/{ordineId}")
+    public Ordine getOrdineById(@PathVariable UUID ordineId) {
+        return ordiniService.findOrdineById(ordineId);}
 
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -29,7 +33,7 @@ public class OrdiniController {
                                         @RequestParam(defaultValue = "id") String sortBy) {
         return this.ordiniService.findAllOrdini(page, size, sortBy);
     }
-          @PostMapping("/crea")
+          @PostMapping("/crea/all")
         public NewEntityRespDTO saveOrdine(@RequestBody @Validated OrdineDTO body, BindingResult validationResult) throws BadRequestException {
             if (validationResult.hasErrors()) {
                 String messages = validationResult.getAllErrors().stream()
@@ -37,7 +41,7 @@ public class OrdiniController {
                         .collect(Collectors.joining(". "));
                 throw new BadRequestException("Ci sono stati errori nel payload. " + messages);
             } else {
-                return new NewEntityRespDTO(this.ordiniService.SaveOrdine(body).getId());
+                return new NewEntityRespDTO(this.ordiniService.saveOrdine(body).getId());
             }
         }
 

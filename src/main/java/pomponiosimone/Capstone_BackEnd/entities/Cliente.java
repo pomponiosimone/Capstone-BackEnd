@@ -1,5 +1,6 @@
 package pomponiosimone.Capstone_BackEnd.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,6 +27,7 @@ public class Cliente {
     private String password;
     private LocalDate dataDiNascita;
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Ordine> ordini;
 
     //Costruttore

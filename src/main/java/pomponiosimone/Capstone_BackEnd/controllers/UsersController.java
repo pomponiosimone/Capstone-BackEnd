@@ -22,7 +22,7 @@ public class UsersController {
     @Autowired
     private UsersService usersService;
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public Page<User> findAll(@RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "10") int size,
                               @RequestParam(defaultValue = "id") String sortBy) {
@@ -30,7 +30,7 @@ public class UsersController {
     }
 
     @GetMapping("/{userId}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public User findById(@PathVariable UUID userId) {
         return this.usersService.findById(userId);
     }

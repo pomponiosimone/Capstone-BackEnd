@@ -47,7 +47,8 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         return new AntPathMatcher().match("/auth/**", request.getServletPath()) ||
         new AntPathMatcher().match("/scarpa/view/**", request.getServletPath()) ||
                 new AntPathMatcher().match("/send-email/**", request.getServletPath()) ||
-        new AntPathMatcher().match("/clienti/auth/**", request.getServletPath());
+        new AntPathMatcher().match("/clienti/auth/**", request.getServletPath()) ||
+                new AntPathMatcher().match("/ordini/crea/**", request.getServletPath());
 
     }
 }

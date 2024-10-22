@@ -8,5 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ClientiRepository extends JpaRepository<Cliente, UUID> {
+    Optional<Cliente> findById(UUID clienteId);
     Optional<Cliente> findByEmail(String email);
     boolean existsByEmail(String email);}

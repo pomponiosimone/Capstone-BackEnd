@@ -7,12 +7,13 @@ import pomponiosimone.Capstone_BackEnd.enums.StatoOrdine;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public record OrdineDTO(
 
         @NotNull(message = "La lista degli articoli non può essere vuota")
-        List<Scarpa> articoli,
+        List<ArticoloDTO> articoli,
 
 
         UUID clienteId,

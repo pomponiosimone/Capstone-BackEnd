@@ -1,5 +1,6 @@
 package pomponiosimone.Capstone_BackEnd.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,9 +29,11 @@ public class Scarpa {
     private String immagine;
     @OneToMany(mappedBy = "scarpa", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Taglia> taglie;
-    @ManyToOne
-    @JoinColumn(name = "id_ordine", nullable = true)
-    private Ordine ordine;
+  /*  @ManyToOne
+
+  @JoinColumn(name = "id_ordine", nullable = true)
+    @JsonIgnore
+    private Ordine ordine;*/
     //Costruttore
 
     public Scarpa(String descrizione, String immagine, String marca, String nome, double prezzo, List<Taglia> taglie) {
@@ -50,5 +53,7 @@ public class Scarpa {
                 .sorted(Comparator.comparingInt(Taglia::getTaglia))
                 .collect(Collectors.toList());
     }
+
+
 }
 
