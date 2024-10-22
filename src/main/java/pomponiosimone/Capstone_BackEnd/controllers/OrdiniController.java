@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
 public class OrdiniController {
     @Autowired
     private OrdiniService ordiniService;
-
+//ID
     @GetMapping("/{ordineId}")
     public Ordine getOrdineById(@PathVariable UUID ordineId) {
         return ordiniService.findOrdineById(ordineId);}
-
+//GET ALL
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Ordine> findAllCliente (
@@ -33,6 +33,7 @@ public class OrdiniController {
                                         @RequestParam(defaultValue = "id") String sortBy) {
         return this.ordiniService.findAllOrdini(page, size, sortBy);
     }
+    //Salvataggio
           @PostMapping("/crea/all")
         public NewEntityRespDTO saveOrdine(@RequestBody @Validated OrdineDTO body, BindingResult validationResult) throws BadRequestException {
             if (validationResult.hasErrors()) {
@@ -45,5 +46,16 @@ public class OrdiniController {
             }
         }
 
-    }
+        //Delete
+        @DeleteMapping("/delete/{ordineId}")
+        @PreAuthorize("hasAuthority('ADMIN')")
+        public void findByIdAndDeleteOrder (@PathVariable UUID ordineId){
+            this.ordiniService.findByIdAndRemoveOrder(ordineId);
+        }
+
+        @PutMapping("/modifica/{ordineId")
+        @PreAuthorize("hasAuthority('ADMIN')")
+        public Ordine findByOrderAndUpdate(@PathVariable UUID ordineId, @RequestBody OrdineDTO body) throws BadRequestException {
+            return this.ordiniService.modificaOrdine(ordineId, body);
+    }}
 

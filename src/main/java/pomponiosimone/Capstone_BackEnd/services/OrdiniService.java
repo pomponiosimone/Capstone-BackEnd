@@ -107,4 +107,49 @@ public Ordine findOrdineById(UUID id) {
 
     return this.ordiniRepository.save(ordine);
 
-   }}
+   }
+//Delete
+public void findByIdAndRemoveOrder(UUID ordineId) {
+    Ordine found = this.findOrdineById(ordineId);
+    this.ordiniRepository.delete(found);
+}
+//PUT
+public Ordine modificaOrdine(UUID id, OrdineDTO body) throws BadRequestException {
+
+    Ordine ordineEsistente = ordiniRepository.findById(id)
+            .orElseThrow(() -> new BadRequestException("Ordine non trovato con ID: " + id));
+
+    TipoSpedizione tipoSpedizione;
+    if (body.tipoSpedizione().equalsIgnoreCase("DOMICILIO")) {
+        tipoSpedizione = TipoSpedizione.DOMICILIO;
+    } else if (body.tipoSpedizione().equalsIgnoreCase("RITIRO")) {
+        tipoSpedizione = TipoSpedizione.RITIRO;
+    } else {
+        throw new BadRequestException("Spedizione non valida. Scegliere uno tra DOMICILIO o RITIRO.");
+    }
+
+    TipoPagamento metodoPagamento;
+    if (body.metodoPagamento().equalsIgnoreCase("CONTANTI")) {
+        metodoPagamento = TipoPagamento.CONTANTI;
+    } else if (body.metodoPagamento().equalsIgnoreCase("CARTA")) {
+        metodoPagamento = TipoPagamento.CARTADICREDITO;
+    } else {
+        throw new BadRequestException("Pagamento non valido. Scegliere uno tra CONTANTI o CARTA DI CREDITO.");
+    }
+
+    Cliente cliente = clientiRepository.findById(body.clienteId())
+            .orElseThrow(() -> new BadRequestException("Cliente non trovato con ID: " + body.clienteId()));
+
+
+    ordineEsistente.setCliente(cliente);
+    ordineEsistente.setIndirizzoSpedizione(body.indirizzoSpedizione());
+    ordineEsistente.setMetodoPagamento(metodoPagamento);
+    ordineEsistente.setSpeseSpedizione(body.speseSpedizione());
+    ordineEsistente.setTipoSpedizione(tipoSpedizione);
+    ordineEsistente.setTotaleOrdine(body.totaleOrdine());
+    ordineEsistente.setStatoOrdine(StatoOrdine.ATTESA);
+
+
+    return ordiniRepository.save(ordineEsistente);
+}
+}

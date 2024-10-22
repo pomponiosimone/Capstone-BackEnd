@@ -60,4 +60,6 @@ public class Ordine {
         this.tipoSpedizione = tipoSpedizione;
         this.totaleOrdine = totaleOrdine;
     }
+
+
 }
