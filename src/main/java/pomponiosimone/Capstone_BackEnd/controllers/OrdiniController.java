@@ -27,7 +27,7 @@ public class OrdiniController {
 //GET ALL
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<Ordine> findAllCliente (
+    public Page<Ordine> findAllOrdine(
                                         @RequestParam(defaultValue = "0") int page,
                                         @RequestParam(defaultValue = "12") int size,
                                         @RequestParam(defaultValue = "id") String sortBy) {
@@ -53,9 +53,10 @@ public class OrdiniController {
             this.ordiniService.findByIdAndRemoveOrder(ordineId);
         }
 
-        @PutMapping("/modifica/{ordineId")
+        @PutMapping("/modifica/{ordineId}")
         @PreAuthorize("hasAuthority('ADMIN')")
         public Ordine findByOrderAndUpdate(@PathVariable UUID ordineId, @RequestBody OrdineDTO body) throws BadRequestException {
+            System.out.println("ID dell'ordine nel controller: " + ordineId);
             return this.ordiniService.modificaOrdine(ordineId, body);
     }}
 

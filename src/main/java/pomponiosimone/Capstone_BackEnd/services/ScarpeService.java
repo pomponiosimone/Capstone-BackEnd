@@ -2,7 +2,6 @@ package pomponiosimone.Capstone_BackEnd.services;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,6 +62,9 @@ public class ScarpeService {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return this.scarpeRepository.findByMarca(marca, pageable);
+    }
+    public List<Scarpa> findByNomeScarpa (@PathVariable String nome){
+        return this.scarpeRepository.findByNomeContaining(nome);
     }
 
     //Find by id

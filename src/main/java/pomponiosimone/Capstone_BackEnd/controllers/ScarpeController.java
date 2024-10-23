@@ -1,6 +1,5 @@
 package pomponiosimone.Capstone_BackEnd.controllers;
 
-import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,6 +18,7 @@ import pomponiosimone.Capstone_BackEnd.payloads.ScarpaDTO;
 import pomponiosimone.Capstone_BackEnd.services.ScarpeService;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -44,7 +44,10 @@ public class ScarpeController {
                                   @RequestParam(defaultValue = "id") String sortBy) {
         return this.scarpeService.findMarca(marca, page, size, sortBy);
     }
-
+@GetMapping("/view/nome/{nome}")
+public List<Scarpa> findNome (@PathVariable() String nome){
+        return this.scarpeService.findByNomeScarpa(nome);
+}
       //get Id
 
     @GetMapping("/view/details/{scarpaId}")

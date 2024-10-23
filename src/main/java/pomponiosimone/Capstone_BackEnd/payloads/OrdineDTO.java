@@ -26,11 +26,10 @@ public record OrdineDTO(
         String metodoPagamento,
 
         @NotNull(message = "Le spese di spedizione sono obbligatorie")
-        @DecimalMin(value = "0.0", inclusive = false, message = "Le spese di spedizione devono essere maggiori di zero")
         Double speseSpedizione,
 
         @NotNull(message = "Lo stato dell'ordine è obbligatorio")
-         StatoOrdine statoOrdine,
+         String statoOrdine,
 
         @NotEmpty(message = "Il tipo di spedizione è obbligatorio")
         String tipoSpedizione,
