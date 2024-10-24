@@ -6,7 +6,10 @@ import kong.unirest.core.JsonNode;
 import kong.unirest.core.Unirest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import pomponiosimone.Capstone_BackEnd.entities.Cliente;
 import pomponiosimone.Capstone_BackEnd.entities.ContattoRichiesta;
+
+import java.util.UUID;
 
  @Component
 public class MailgunSender {
@@ -34,4 +37,14 @@ public class MailgunSender {
 
         System.out.println(response.getBody());
     }
-}
+     public void sendTracking(Cliente cliente, UUID ordineId) {
+             HttpResponse<JsonNode> response = Unirest.post("https://api.mailgun.net/v3/" + this.domainName + "/messages")
+                     .basicAuth("api", this.apiKey)
+                     .queryString("from", this.fromEmail)
+                     .queryString("to", cliente.getEmail())
+                     .queryString("subject", "Conferma ordine #" + ordineId)
+                     .queryString("text", "Il tuo ordine  è stato confermato."  + ordineId + " questo è il tuo codice tracking.")
+                     .asJson();
+
+             System.out.println(response.getBody());
+     }}

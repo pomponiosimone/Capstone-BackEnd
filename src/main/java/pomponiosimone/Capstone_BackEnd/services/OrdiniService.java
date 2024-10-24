@@ -17,6 +17,7 @@ import pomponiosimone.Capstone_BackEnd.payloads.OrdineDTO;
 import pomponiosimone.Capstone_BackEnd.repositories.ClientiRepository;
 import pomponiosimone.Capstone_BackEnd.repositories.OrdiniRepository;
 import pomponiosimone.Capstone_BackEnd.repositories.ScarpeRepository;
+import pomponiosimone.Capstone_BackEnd.tools.MailgunSender;
 
 import java.util.*;
 
@@ -28,6 +29,8 @@ private OrdiniRepository ordiniRepository;
 private ClientiRepository clientiRepository;
 @Autowired
 private ScarpeRepository scarpeRepository;
+@Autowired
+    MailgunSender mailgunSender;
 
 //Get by id
 public Ordine findOrdineById(UUID id) {
@@ -140,6 +143,7 @@ public Ordine modificaOrdine(UUID ordineId, OrdineDTO body) throws BadRequestExc
         statoOrdine = StatoOrdine.ATTESA;
     } else if (body.statoOrdine() != null && body.statoOrdine().equalsIgnoreCase("CONFERMATO")) {
         statoOrdine = StatoOrdine.CONFERMATO;
+       mailgunSender.sendTracking(ordineEsistente.getCliente(), ordineId);
     } else if (body.statoOrdine() != null && body.statoOrdine().equalsIgnoreCase("SPEDITO")) {
         statoOrdine = StatoOrdine.SPEDITO;
     } else if (body.statoOrdine() != null && body.statoOrdine().equalsIgnoreCase("CONSEGNATO")) {
