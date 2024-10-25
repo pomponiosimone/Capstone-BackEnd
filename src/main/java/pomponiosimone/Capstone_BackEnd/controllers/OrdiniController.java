@@ -2,6 +2,7 @@ package pomponiosimone.Capstone_BackEnd.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +13,8 @@ import pomponiosimone.Capstone_BackEnd.payloads.NewEntityRespDTO;
 import pomponiosimone.Capstone_BackEnd.payloads.OrdineDTO;
 import pomponiosimone.Capstone_BackEnd.services.OrdiniService;
 
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -20,10 +23,20 @@ import java.util.stream.Collectors;
 public class OrdiniController {
     @Autowired
     private OrdiniService ordiniService;
+
+
 //ID
     @GetMapping("/{ordineId}")
-    public Ordine getOrdineById(@PathVariable UUID ordineId) {
+    public Ordine OrdineById(@PathVariable UUID ordineId) {
         return ordiniService.findOrdineById(ordineId);}
+
+    //Get ordine By Data
+    @GetMapping("/data/{dataOrdine}")
+    public List<Ordine> OrdineByData(
+            @PathVariable("dataOrdine")
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date dataOrdine) {
+        return ordiniService.findOrdineByData(dataOrdine);
+    }
 //GET ALL
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN')")

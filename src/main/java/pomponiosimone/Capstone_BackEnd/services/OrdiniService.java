@@ -37,6 +37,10 @@ public Ordine findOrdineById(UUID id) {
     return ordiniRepository.findById(id)
             .orElseThrow(() -> new BadRequestException("Ordine non trovato con ID: " + id));
 }
+//fIND by DATA
+public List<Ordine> findOrdineByData(Date dataOrdine) {
+    return (List<Ordine>) ordiniRepository.findByDataOrdine(dataOrdine) .orElseThrow(() -> new BadRequestException("Ordine non trovato con data: " + dataOrdine));
+    }
     //GET ALL
     public Page<Ordine> findAllOrdini(int page, int size, String sortBy) {
         if (page > 12) page = 12;
