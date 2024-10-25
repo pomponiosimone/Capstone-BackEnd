@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pomponiosimone.Capstone_BackEnd.entities.Cliente;
+import pomponiosimone.Capstone_BackEnd.entities.Ordine;
 import pomponiosimone.Capstone_BackEnd.exceptions.NotFoundException;
 import pomponiosimone.Capstone_BackEnd.exceptions.UnauthorizedException;
 import pomponiosimone.Capstone_BackEnd.payloads.ClienteDTO;
@@ -16,6 +17,8 @@ import pomponiosimone.Capstone_BackEnd.repositories.ClientiRepository;
 import pomponiosimone.Capstone_BackEnd.security.JWTTools;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,7 +28,8 @@ public class ClientiService {
     private ClientiRepository clientiRepository;
     @Autowired
     private PasswordEncoder bcrypt;
-
+@Autowired
+private JWTTools jwtTools;
     //Find all
     public Page<Cliente> findAllCienti(int page, int size, String sortBy) {
            if (page > 12) page = 12;
@@ -54,11 +58,11 @@ return this.clientiRepository.save(new Cliente("https://ui-avatars.com/api/?name
         dataDiNascita, body.email(), body.indirizzoCompleto(), body.nome(), bcrypt.encode(body.password())));
 }
     // Login
-    public Cliente loginCliente(ClienteDTO body) throws BadRequestException {
+    public String createTokens(ClienteDTO body) throws BadRequestException {
         Cliente found = this.clientiRepository.findByEmail(body.email())
                 .orElseThrow(() -> new BadRequestException("Cliente non trovato con email " + body.email()));
         if (bcrypt.matches(body.password(), found.getPassword())) {
-            return found;
+            return jwtTools.createTokenCliente(found);
         } else {
             throw new UnauthorizedException("Credenziali errate!");
         }
@@ -75,6 +79,19 @@ return this.clientiRepository.save(new Cliente("https://ui-avatars.com/api/?name
         clienteFound.setAvatarURL(body.getAvatarURL());
         clienteFound.setIndirizzoCompleto(body.getIndirizzoCompleto());
         return this.clientiRepository.save(clienteFound);
+    }
+    //Ordini
+    public List<Ordine> getOrdiniByClienteId(UUID clienteId) {
+        Optional<Cliente> cliente = clientiRepository.findById(clienteId);
+        if (cliente.isPresent()) {
+            return cliente.get().getOrdini();
+        } else {
+            throw new RuntimeException("Cliente non trovato con id: " + clienteId);
+        }
+    }
+    public Cliente getClienteByEmail(String email) throws BadRequestException {
+        return clientiRepository.findByEmail(email)
+                .orElseThrow(() -> new BadRequestException("Cliente non trovato con email: " + email));
     }
 }
 

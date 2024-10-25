@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pomponiosimone.Capstone_BackEnd.entities.Cliente;
+import pomponiosimone.Capstone_BackEnd.entities.Ordine;
 import pomponiosimone.Capstone_BackEnd.entities.Scarpa;
 import pomponiosimone.Capstone_BackEnd.payloads.ClienteDTO;
 import pomponiosimone.Capstone_BackEnd.payloads.NewEntityRespDTO;
@@ -17,7 +18,7 @@ import pomponiosimone.Capstone_BackEnd.payloads.UserDTO;
 import pomponiosimone.Capstone_BackEnd.security.JWTTools;
 import pomponiosimone.Capstone_BackEnd.services.ClientiService;
 
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -38,10 +39,26 @@ public class ClientiController {
 
     //Login
     @PostMapping("/auth/login")
-    public ResponseEntity<Cliente> login(@RequestBody ClienteDTO body) throws BadRequestException {
-        Cliente cliente = clientiService.loginCliente(body);
-        return ResponseEntity.ok(cliente);
+    public ResponseEntity<Map<String, Object>> login(@RequestBody ClienteDTO body) {
+        try {
+
+            String token = clientiService.createTokens(body);
+
+
+            Cliente cliente = clientiService.getClienteByEmail(body.email());
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", token);
+            response.put("cliente", cliente);
+
+            return ResponseEntity.ok(response);
+        } catch (BadRequestException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Collections.singletonMap("message", e.getMessage()));
+        }
     }
+
+
     //Registrazione Post
     @PostMapping("/auth/register")
     @ResponseStatus(HttpStatus.CREATED)
@@ -63,23 +80,30 @@ public class ClientiController {
     }
     //GET CLIENTE
     @GetMapping("/{clienteId}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public Cliente findByIdCliente(@PathVariable UUID clienteId) {
         return this.clientiService.findClienteById(clienteId);
     }
 
     //DELETE CLIENTE
     @DeleteMapping("/{clienteId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public void findByIdAndDelete(@PathVariable UUID clienteId) {
         this.clientiService.findClienteByIdAndDelete(clienteId);
     }
 
     //PUT
     @PutMapping("/{clienteId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     public Cliente findByIdAndUpdate(@PathVariable UUID clienteId, @RequestBody Cliente body) throws org.apache.coyote.BadRequestException {
         return this.clientiService.findByClienteIdAndUpdate(clienteId, body);
+    }
+    //Lista ordini
+    @GetMapping("/{clienteId}/ordini")
+    public ResponseEntity<List<Ordine>> getOrdiniByClienteId(@PathVariable UUID clienteId) {
+        try {
+            List<Ordine> ordini = clientiService.getOrdiniByClienteId(clienteId);
+            return ResponseEntity.ok(ordini);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
 
